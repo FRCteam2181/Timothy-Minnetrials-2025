@@ -39,9 +39,15 @@ public final class Constants {
   }
 
   public static final class butterClawConstants {
-    public static final int ButterClaw_ID = 5;
+    public static final int ButterClawRotator_ID = 5;
+    public static final int ButterClawWheel_ID = 6;
+
     public static final int ButterClaw_CURRENT_LIMIT = 60;
+
     public static final double ButterClaw_MOTOR_VOLTAGE_COMP = 10;
-    public static final double ButterClaw_SPEED = 0.5;
+
+    public static final double ButterClawRotate_SPEED = 0.5;
+    public static final double ButterClawIntake_SPEED = -0.75;
+    public static final double ButterClawShoot_SPEED = 1;
   }
 }

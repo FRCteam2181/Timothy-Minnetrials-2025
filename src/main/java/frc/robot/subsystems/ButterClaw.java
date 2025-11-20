@@ -15,15 +15,19 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 
 public class ButterClaw extends SubsystemBase{
+
     private final SparkMax ButterClawRotator;
+    private final SparkMax ButterShooter;
 
     public ButterClaw() {
-        ButterClawRotator = new SparkMax(butterClawConstants.ButterClaw_ID, MotorType.kBrushless);
+        ButterClawRotator = new SparkMax(butterClawConstants.ButterClawRotator_ID, MotorType.kBrushless);
+        ButterShooter = new SparkMax(butterClawConstants.ButterClawWheel_ID, MotorType.kBrushless);
 
         // Set can timeout. Because this project only sets parameters once on
         // construction, the timeout can be long without blocking robot operation. Code
         // which sets or gets parameters during operation may need a shorter timeout.
         ButterClawRotator.setCANTimeout(250);
+        ButterShooter.setCANTimeout(250);
 
         // Create and apply configuration for roller motor. Voltage compensation helps
         // the roller behave the same as the battery
@@ -33,17 +37,19 @@ public class ButterClaw extends SubsystemBase{
         butterClawConfig.voltageCompensation(RollerConstants.ROLLER_MOTOR_VOLTAGE_COMP);
         butterClawConfig.smartCurrentLimit(RollerConstants.ROLLER_MOTOR_CURRENT_LIMIT);
         butterClawConfig.idleMode(IdleMode.kBrake);
+
         ButterClawRotator.configure(butterClawConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        ButterShooter.configure(butterClawConfig, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
     public Command ButterClawUp() {
         return this.startEnd(
             () -> {
-                setButterClawRotate(butterClawConstants.ButterClaw_SPEED);
+                setMotorSpeed(butterClawConstants.ButterClawRotate_SPEED, ButterClawRotator);
             },
 
             () -> {
-                setButterClawRotate(0);
+                setMotorSpeed(0, ButterClawRotator);
             }
         );
     }
@@ -51,16 +57,40 @@ public class ButterClaw extends SubsystemBase{
     public Command ButterClawDown() {
         return this.startEnd(
             () -> {
-                setButterClawRotate(-butterClawConstants.ButterClaw_SPEED);
+                setMotorSpeed(-butterClawConstants.ButterClawRotate_SPEED, ButterClawRotator);
             },
 
             () -> {
-                setButterClawRotate(0);
+                setMotorSpeed(0, ButterClawRotator);
             }
         );
     }
 
-    public void setButterClawRotate(double speed) {
-        ButterClawRotator.set(speed);
+    public Command ShootButter() {
+        return this.startEnd(
+            () -> {
+                setMotorSpeed(butterClawConstants.ButterClawShoot_SPEED, ButterShooter);
+            },
+
+            () -> {
+                setMotorSpeed(0, ButterShooter);
+            }
+        );
+    }
+
+    public Command IntakeButter() {
+        return this.startEnd(
+            () -> {
+                setMotorSpeed(butterClawConstants.ButterClawIntake_SPEED, ButterShooter);
+            },
+
+            () -> {
+                setMotorSpeed(0, ButterShooter);
+            }
+        );
+    }
+
+    public void setMotorSpeed(double speed, SparkMax motor) {
+        motor.set(speed);
     }
 }
