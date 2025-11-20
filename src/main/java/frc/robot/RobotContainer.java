@@ -14,6 +14,7 @@ import frc.robot.Constants.RollerConstants;
 import frc.robot.commands.AutoCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.CANDriveSubsystem;
+import frc.robot.subsystems.PopcornShooter;
 import frc.robot.subsystems.ButterClaw;
 
 /**
@@ -29,6 +30,7 @@ public class RobotContainer {
   // The robot's subsystems
   private final CANDriveSubsystem driveSubsystem = new CANDriveSubsystem();
   private final ButterClaw butterClaw = new ButterClaw();
+  private final PopcornShooter popcornShooter = new PopcornShooter();
 
   // The driver's controller
   private final CommandXboxController driverController = new CommandXboxController(
@@ -76,6 +78,8 @@ public class RobotContainer {
 
     operatorController.a().whileTrue(butterClaw.IntakeButter());
     operatorController.b().whileTrue(butterClaw.ShootButter());
+
+    operatorController.x().whileTrue(popcornShooter.launchPopcorn());
 
     // Set the default command for the drive subsystem to an instance of the
     // DriveCommand with the values provided by the joystick axes on the driver

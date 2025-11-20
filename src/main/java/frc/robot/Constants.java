@@ -50,4 +50,17 @@ public final class Constants {
     public static final double ButterClawIntake_SPEED = -0.75;
     public static final double ButterClawShoot_SPEED = 1;
   }
+
+  public static final class PopcornShooterConstants {
+
+    public static final int PopcornShooter_ID = 7;
+
+    public static final int PopcornShooter_CURRENT_LIMIT = 60;
+
+    public static final double PopcornShooter_MOTOR_VOLTAGE_COMP = 10;
+
+    public static final double PopcornShooter_SPEED = .75;
+
+
+  }
 }
