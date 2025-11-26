@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -16,6 +17,9 @@ import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.PopcornShooter;
 import frc.robot.subsystems.ButterClaw;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -37,7 +41,7 @@ public class RobotContainer {
       OperatorConstants.DRIVER_CONTROLLER_PORT);
 
   // The operator's controller
-  private final CommandXboxController operatorController = new CommandXboxController(
+  private final Joystick operatorController = new Joystick(
       OperatorConstants.OPERATOR_CONTROLLER_PORT);
 
   // The autonomous chooser
@@ -73,13 +77,21 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    operatorController.rightTrigger().whileTrue(butterClaw.ButterClawDown());
-    operatorController.rightBumper().whileTrue(butterClaw.ButterClawUp());
+    
+    JoystickButton butterClawDownButton = new JoystickButton(operatorController, 1);
+    butterClawDownButton.whileTrue(butterClaw.ButterClawDown());
 
-    operatorController.a().whileTrue(butterClaw.IntakeButter());
-    operatorController.b().whileTrue(butterClaw.ShootButter());
+    JoystickButton butterClawUpButton = new JoystickButton(operatorController, 4);
+    butterClawUpButton.whileTrue(butterClaw.ButterClawUp());
 
-    operatorController.x().whileTrue(popcornShooter.launchPopcorn());
+    JoystickButton intakeButterButton = new JoystickButton(operatorController, 5);
+    intakeButterButton.whileTrue(butterClaw.IntakeButter());
+    
+    JoystickButton shootButterButton = new JoystickButton(operatorController, 2);
+    shootButterButton.whileTrue(butterClaw.ShootButter());
+
+    JoystickButton launchPopcornButton = new JoystickButton(operatorController, 6);
+    launchPopcornButton.whileTrue(popcornShooter.launchPopcorn());
 
     // Set the default command for the drive subsystem to an instance of the
     // DriveCommand with the values provided by the joystick axes on the driver
